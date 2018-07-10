@@ -1,0 +1,38 @@
+<%= current_user.email %>
+<h3>현재 참여한 사람</h3>
+<div class="joined_user_list">
+<% @chat_room.users.each do |user| %>
+<p><%= user.email %></p>
+<% end %>
+</div>
+
+<hr>
+
+<%if !@chat_room.users.include?(current_user)%>
+<%= link_to 'Join', join_chat_room_path(@chat_room), method: 'post', remote: true, class: "join_room" %> |
+<% end %>
+<%= link_to 'Edit', edit_chat_room_path(@chat_room) %> |
+<%= link_to 'Back', chat_rooms_path %>
+
+<script>
+$(document).on('ready', function(){
+    
+    function user_joined(data){
+        $('.joined_user_list').append(`<p>${data.email}</p>`);
+    }
+    
+    
+    var pusher = new Pusher("<%= ENV["Pusher_key"] %>", {
+      cluster: "<%= ENV["Pusher_cluster"] %>",
+      encrypted: true
+      });
+
+    var channel = pusher.subscribe('chat_room');
+      channel.bind('join', function(data) {
+        console.log("유저가 들어감");
+        user_joined(data);
+      }); 
+     
+    });
+
+</script>
