@@ -1,4 +1,20 @@
-## Day21_180710
+## 20180710 Proj with LikeLion
+
+1. bootstrap이 4버전으로 업데이트 되었기 때문에, 버전에 맞춰 진행하는 것이 중요하다. 해당 버전에 맞춰서 gem을 설치한다.(4버전 - `bootstrap`, 3버전 -`bootstrap-sass`)
+
+2. 설치된 gem들을 사용할 수 있게 설정하는 것
+
+3. 우리가 사용할 템플릿 파일에서 사용하고 있는 `stylesheet`파일들을 확인하고, *vendor/assets/stylesheet*에 Copy&Paste한다.
+   * vendor 폴더를 사용하는 이유는 여기에 들어가는css 와 js 는 거의 변화가 없는 library 정도에 해당하는 파일이 들어간다. 변화할 파일들(*custom.css/style.css*)은 *app/assets/stylesheet*에 넣어둔다.
+4. *app/assets/stylesheet/aplication.css* ->`scss`로 확장자를 바꾸고, 우리가 vendor에 넣어둔 파일들을 전부 @import 한다. 기존에 있던 *= 형태로 되어있는 import는 전부제거한다.
+5. 동일한 형태로 js 도 진행한다.(파일 복사). 새로운 컨트롤러가 만들어질때, coffee 스크립트가 적용되는데, 이 확장자도  js로 바꿔준다. //= require-tree는 삭제하고, `application.js`에서는 bootstrap과 jquery 혹은 모든 페이지에서 공통되는 js만 import시켜준다.
+6. *config/initializers/assets.rb*에서`Rails.application.config.assets.precompile`부분 주석처리를 해제하고, 우리가 사용할 컨트롤러에 해당하는 js와 scss파일명을 나열한다.
+7. `rake assets:precompile`을 실행해서 scss파일과 js 파일에 이상이 없는지 확인한다. 이상이 있는 부분은 css, js에 맞춰서 수정한다.
+8. 이제 실제 body에 해당하는 부분을 우리 페이지로 가져오면 되는데, `nav, footer`는 파일을 분리하는 것이 좋다. 왜냐하면 반복적으로 사용될 친구들이라서, 페이지마다 넣는다면 수정할때 매우 불편쓰~, 이 친구들은 render(partial)을 이용해서 view를 분리하는 게 좋다. 그래서 필요한 부분에 가져다 사용한다.
+9. 실제로 우리가 만든 view에는 우리 서비스가 제공되는 페이지이자 로직이 들어간다.
+10. js의 경우에는 대부분 문서 제일 마지막에 들어가는데, 이부분을 해결하기 위해서 `yield 'contenT_name'`과 `content_for`, `content_name`과 같은 전략을 사용한다.
+11. 우리가 1~5번까지 작성했던 js파일과 scss파일을 실제 뷰에서 사용하기 위해서, `stylesheet_link_tag`와 `javascript_include_tag`에 각 컨트롤러에 맞는 파일을 가져오기 위해서 `params[:controller]`라는 매개변수를 주어 각 컨트롤러마다 다른  scss와 js에 적용되도록 한다.
+12. 이 모든것을 `asset_pipeline`이라고 하는데 , 이는 페이지를 더 빠르게 로드하기 위한 전략으로 사용된다.
 
 - pusher
   - how? 코드가 정말 간단함.
