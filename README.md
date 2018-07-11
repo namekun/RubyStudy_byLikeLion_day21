@@ -170,7 +170,8 @@ end
   
   <div class="form-group">
     <%= f.label :max_count %>
-​```ruby
+```    
+```ruby
 <table>
   <thead>
     <tr>
@@ -217,10 +218,10 @@ end
 
 ```ruby
 development:
-    Pusher_app_id: 557890
-    Pusher_key: 905065198d08d4cdb767
-    Pusher_secret: 5a02f2adab3981d1f03b
-    Pusher_cluster: ap1
+    Pusher_app_id: 
+    Pusher_key: 
+    Pusher_secret: 
+    Pusher_cluster: 
 ```
 
 
